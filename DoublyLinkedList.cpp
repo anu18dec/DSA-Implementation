@@ -83,17 +83,7 @@ class DoublyList{
 			}
 		}
 
-		// Return Node type first element pointer
-		Node * begin(){
 
-			return head;
-		}
-
-		// Return Node type last element pointer
-		Node * end(){
-
-			return tail;
-		}
 
 		// Appending value at front
 		void pushFront(int value){
@@ -165,6 +155,44 @@ class DoublyList{
 			}
 		}
 
+		// Insert element at position
+		void insert(int pos, int value){
+
+
+			if(pos > 1){
+
+				Node * n = head;
+				pos--;
+
+				while(n->next && pos > 0){
+
+					n = n->next;
+					pos--;
+				}
+
+				if(pos == 0){
+
+					Node * p = n->prev;
+					Node * temp = new Node;
+					temp->data = value;
+					temp->next = n;
+					temp->prev = p;
+					p->next = temp;
+					n->prev = temp;
+				}
+			}
+			else{
+
+				Node * temp = new Node;
+				temp->data = value;
+				temp->prev = NULL;
+				temp->next = head;
+				head->prev = temp;
+				head = temp;
+			}
+
+		}
+
 		int empty(){
 
 			return head != NULL;
@@ -188,17 +216,17 @@ int main()
 {	
 
 	// Creating main for testing
-	DoublyList list(20,0);
+	DoublyList list(5,0);
 	list.pushBack(10);
-	list.display();
-	cout<<endl;
 	list.pushFront(1);
 	list.display();
 	cout<<endl;
-	// cout<<list.front()<<endl;
-	// cout<<list.back()<<endl;
 	list.popFront();
 	list.popBack();
+	list.display();
+	cout<<endl;
+	list.insert(3,4);
+	list.insert(1,5);
 	list.display();
 	cout<<endl;
 
