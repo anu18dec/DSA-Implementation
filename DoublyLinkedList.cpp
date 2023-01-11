@@ -193,6 +193,98 @@ class DoublyList{
 
 		}
 
+		//
+		void remove(int value, int allOccurances = 0){
+
+			int i = 1;
+
+			if(allOccurances){
+
+				Node * temp = head->next;
+
+				while(temp && temp != tail){
+
+					if(temp->data == value){
+
+						Node * p = temp->prev;
+						Node * n = temp->next;
+						p->next = n;
+						n->prev = p;
+						delete temp;
+						temp = p;
+					}
+					temp = temp->next;
+				}
+
+				if(head->data == value){
+
+					temp = head;
+					head = head->next;
+					head->prev = NULL;
+					delete temp;
+				}
+				if(tail->data == value){
+
+					temp = tail;
+					tail = tail->prev;
+					if(tail != NULL){
+
+						tail->next = NULL;
+					}
+					else{
+
+						head = NULL;
+					}
+					delete temp;
+				}
+			}
+			else{
+
+				Node * temp = head;
+
+				while(temp){
+
+					if(temp->data == value){
+
+						Node * p = temp->prev;
+						Node * n = temp->next;
+
+						if(p == NULL){
+
+							head = head->next;
+
+							if(head){
+
+								head->prev = NULL;
+							}
+						}
+						if(n == NULL){
+
+							tail = tail->prev;
+
+							if(tail){
+
+								tail->next = NULL;
+							}
+						}
+
+						if(p){
+
+							p->next = n;
+						}
+						if(n){
+
+							n->prev = p;
+						}
+						delete temp;
+						return;
+					}
+					temp = temp->next;
+				}
+			}
+		}
+		
+
 		int empty(){
 
 			return head != NULL;
@@ -216,20 +308,16 @@ int main()
 {	
 
 	// Creating main for testing
-	DoublyList list(5,0);
-	list.pushBack(10);
-	list.pushFront(1);
-	list.display();
-	cout<<endl;
-	list.popFront();
-	list.popBack();
+	DoublyList list(1,0);
+
 	list.display();
 	cout<<endl;
 	list.insert(3,4);
 	list.insert(1,5);
 	list.display();
 	cout<<endl;
-
+	list.remove(0,0);
+	list.display();
 
 	return 0;
 }
