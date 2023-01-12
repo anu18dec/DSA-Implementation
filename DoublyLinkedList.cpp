@@ -19,6 +19,7 @@ class DoublyList{
 
 		Node * head;
 		Node * tail;
+		int nodeCounts;
 
 	public:
 
@@ -27,12 +28,15 @@ class DoublyList{
 
 			head = NULL;
 			tail = NULL;
+			nodeCounts = 0;
 		}
 
 		// Parameterized user defined constructor that take size and value
 		DoublyList(int size , int value = 0){
 
 			Node * temp;
+
+			nodeCounts = size;
 
 			if( size > 0 ){
 
@@ -105,6 +109,7 @@ class DoublyList{
 				temp->next = NULL;
 				head = tail = temp;
 			}
+			nodeCounts++;
 
 		}
 
@@ -128,6 +133,7 @@ class DoublyList{
 				temp->next = NULL;
 				head = tail = temp;
 			}
+			nodeCounts++;
 
 		}
 
@@ -140,6 +146,7 @@ class DoublyList{
 				head = head->next;
 				head->prev = NULL;
 				delete temp;
+				nodeCounts--;
 			}
 		}
 
@@ -152,6 +159,7 @@ class DoublyList{
 				tail = tail->prev;
 				tail->next = NULL;
 				delete temp;
+				nodeCounts--;
 			}
 		}
 
@@ -179,9 +187,10 @@ class DoublyList{
 					temp->prev = p;
 					p->next = temp;
 					n->prev = temp;
+					nodeCounts++;
 				}
 			}
-			else{
+			else if (pos == 1){
 
 				Node * temp = new Node;
 				temp->data = value;
@@ -189,11 +198,12 @@ class DoublyList{
 				temp->next = head;
 				head->prev = temp;
 				head = temp;
+				nodeCounts++;
 			}
 
 		}
 
-		//
+		// Remove first or all occurrences of element
 		void remove(int value, int allOccurances = 0){
 
 			int i = 1;
@@ -212,6 +222,7 @@ class DoublyList{
 						n->prev = p;
 						delete temp;
 						temp = p;
+						nodeCounts--;
 					}
 					temp = temp->next;
 				}
@@ -222,6 +233,7 @@ class DoublyList{
 					head = head->next;
 					head->prev = NULL;
 					delete temp;
+					nodeCounts--;
 				}
 				if(tail->data == value){
 
@@ -236,6 +248,7 @@ class DoublyList{
 						head = NULL;
 					}
 					delete temp;
+					nodeCounts--;
 				}
 			}
 			else{
@@ -277,17 +290,41 @@ class DoublyList{
 							n->prev = p;
 						}
 						delete temp;
+						nodeCounts--;
 						return;
 					}
 					temp = temp->next;
 				}
 			}
 		}
-		
 
+		// Remove all elements of list
+		void clear(){
+
+			Node * temp = head;
+			Node * p;
+			head = tail = NULL;
+
+			while(temp){
+
+				p = temp;
+				temp = temp->next;
+				delete p;
+			}
+			nodeCounts = 0;
+
+		}
+
+		// Return list is empty or not
 		int empty(){
 
 			return head != NULL;
+		}
+
+		// Return size of the array
+		int size(){
+
+			return 	nodeCounts;
 		}
 
 		// Printing all elements
@@ -303,21 +340,3 @@ class DoublyList{
 		}
 
 };
-
-int main()
-{	
-
-	// Creating main for testing
-	DoublyList list(1,0);
-
-	list.display();
-	cout<<endl;
-	list.insert(3,4);
-	list.insert(1,5);
-	list.display();
-	cout<<endl;
-	list.remove(0,0);
-	list.display();
-
-	return 0;
-}
